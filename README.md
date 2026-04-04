@@ -34,8 +34,19 @@ vercel
 
 - `BLOB_ACCESS`: Blob 访问模式，默认 `private`
 - `LYRIC_CACHE_PREFIX`: 缓存路径前缀，默认 `lyrics`
+- `LOG_LEVEL`: 日志级别，默认 `INFO`
 
 如果未设置 `BLOB_READ_WRITE_TOKEN`，服务会自动降级为“仅实时抓取”，不影响接口可用性。
+
+### Vercel 日志排查
+
+服务会在 Vercel Logs 输出以下关键日志：
+
+- `cache_read hit/miss/failed`
+- `cache_write success/failed/give_up`
+- `search selected/return_cache/return_remote`
+
+如果一直是 `miss`，先看 `cache_write failed` 的 status 和 body，一般能直接定位为 token、access 或路径问题。
 
 ### 获取歌词
 
