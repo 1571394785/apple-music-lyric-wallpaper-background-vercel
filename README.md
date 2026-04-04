@@ -18,6 +18,25 @@ vercel
 
 ## API使用
 
+## 歌词缓存（Vercel Blob）
+
+服务已支持按歌曲 `mid` 做歌词缓存：
+
+- 先读取 Blob 缓存
+- 缓存未命中时再调用 QQ 音乐接口抓取
+- 抓取成功后写回 Blob，供后续请求复用
+
+### 必需环境变量
+
+- `BLOB_READ_WRITE_TOKEN`: Vercel Blob 的读写 Token（在 Vercel 项目 Storage 中创建 Blob 后自动注入）
+
+### 可选环境变量
+
+- `BLOB_ACCESS`: Blob 访问模式，默认 `private`
+- `LYRIC_CACHE_PREFIX`: 缓存路径前缀，默认 `lyrics`
+
+如果未设置 `BLOB_READ_WRITE_TOKEN`，服务会自动降级为“仅实时抓取”，不影响接口可用性。
+
 ### 获取歌词
 
 **接口**: `/api/lyric`
@@ -45,7 +64,9 @@ curl "https://your-domain.vercel.app/api/lyric?key=稻香&artist=周杰伦"
 {
   "lyric": "...",
   "trans": "...",
-  "roma": "..."
+  "roma": "...",
+  "mid": "0039MnYb0qxYhV",
+  "cache": "hit"
 }
 ```
 
