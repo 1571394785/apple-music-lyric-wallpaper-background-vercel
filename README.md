@@ -48,6 +48,12 @@ vercel
 
 如果一直是 `miss`，先看 `cache_write failed` 的 status 和 body，一般能直接定位为 token、access 或路径问题。
 
+如果日志里出现：
+
+`Cannot use public access on a private store`
+
+说明当前 Blob Store 是 private，但写入时使用了 public access。请将环境变量 `BLOB_ACCESS` 设置为 `private`（或删除该变量使用默认值）。
+
 ### 获取歌词
 
 **接口**: `/api/lyric`

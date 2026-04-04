@@ -152,7 +152,6 @@ def _write_lyric_cache(mid: str, lyric_data: Dict[str, Any]) -> None:
     for access in _blob_access_candidates():
         headers = {
             "Authorization": f"Bearer {token}",
-            "x-vercel-blob-access": access,
             "x-allow-overwrite": "true",
             "x-content-type": "application/json; charset=utf-8",
         }
@@ -160,7 +159,7 @@ def _write_lyric_cache(mid: str, lyric_data: Dict[str, Any]) -> None:
         try:
             response = httpx.put(
                 BLOB_API_URL,
-                params={"pathname": pathname},
+                params={"pathname": pathname, "access": access},
                 headers=headers,
                 content=body,
                 timeout=HTTP_TIMEOUT,
